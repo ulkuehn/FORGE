@@ -4,6 +4,8 @@
 module.exports = {
   packagerConfig: {
     asar: true,
+    name: "packagerName",
+    icon: "src/dim.ico",
   },
   rebuildConfig: {},
   makers: [
@@ -11,6 +13,7 @@ module.exports = {
       name: "@electron-forge/maker-squirrel",
       config: {
         loadingGif: "dim.gif",
+        setupIcon: "dim.ico",
         // authors: "_DIM",
         // owners: "ownedby...",
         // description: "describethisnot",
@@ -40,7 +43,7 @@ module.exports = {
           owner: "ulkuehn",
           name: "FORGE",
         },
-        authToken:"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",
+        authToken: "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",
         prerelease: true,
       },
     },

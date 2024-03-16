@@ -1,12 +1,17 @@
 const { app, BrowserWindow } = require("electron");
 const path = require("path");
+const os = require("os");
+const fs = require("fs");
+const util = require("util");
 
-var fs = require("fs");
-var util = require("util");
-var logFile = fs.createWriteStream("c:/users/Ulrich/forge_log.txt", {
+// LOGGING
+// create and display a tempory dir
+let theTmpDir = fs.mkdtempSync(`${os.tmpdir()}${path.sep}`);
+console.log("tmpdir", theTmpDir);
+// create a log file
+var logFile = fs.createWriteStream(`${theTmpDir}${path.sep}log.txt`, {
   flags: "a",
 });
-// Or 'w' to truncate the file every time the process starts.
 var logStdout = process.stdout;
 
 console.log = function () {
@@ -14,10 +19,11 @@ console.log = function () {
   logFile.write(
     util.format.apply(null, arguments).replace(/\033\[[0-9;]*m/g, "") + "\n"
   );
-  // logFile.sync();
   // Display normally, with colors to Stdout
   logStdout.write(util.format.apply(null, arguments) + "\n");
 };
+
+console.log("starting...", process.argv);
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
@@ -25,8 +31,6 @@ if (require("electron-squirrel-startup")) {
   return;
   // quit();
 }
-
-console.log("starting...",process.argv)
 
 // this should be placed at top of main.js to handle setup events quickly
 if (handleSquirrelEvent()) {
@@ -40,7 +44,6 @@ function quit() {
 }
 
 function handleSquirrelEvent() {
-
   if (process.argv.length === 1) {
     return false;
   }
@@ -105,17 +108,19 @@ function handleSquirrelEvent() {
 }
 
 const createWindow = () => {
+  console.log("creating main window");
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    icon: "dim.ico",
+    icon: "./dim.ico",
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
   });
 
   // and load the index.html of the app.
+  console.log("loading index.html");
   mainWindow.loadFile(path.join(__dirname, "index.html"));
 
   // Open the DevTools.
@@ -127,22 +132,19 @@ const createWindow = () => {
 // Some APIs can only be used after this event occurs.
 app.on("ready", createWindow);
 
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
+// Quit when all windows are closed
 app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") {
-    quit();
-  }
+  console.log("window-all-closed event");
+  quit();
 });
 
-app.on("activate", () => {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
-  }
-});
+// app.on("activate", () => {
+//   // On OS X it's common to re-create a window in the app when the
+//   // dock icon is clicked and there are no other windows open.
+//   if (BrowserWindow.getAllWindows().length === 0) {
+//     createWindow();
+//   }
+// });
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
