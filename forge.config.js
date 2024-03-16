@@ -1,5 +1,5 @@
-const { FusesPlugin } = require("@electron-forge/plugin-fuses");
-const { FuseV1Options, FuseVersion } = require("@electron/fuses");
+// const { FusesPlugin } = require("@electron-forge/plugin-fuses");
+// const { FuseV1Options, FuseVersion } = require("@electron/fuses");
 
 module.exports = {
   packagerConfig: {
@@ -19,10 +19,10 @@ module.exports = {
         // name: "theName"
       },
     },
-    {
-      name: "@electron-forge/maker-zip",
-      platforms: ["darwin"],
-    },
+    // {
+    //   name: "@electron-forge/maker-zip",
+    //   platforms: ["darwin"],
+    // },
     {
       name: "@electron-forge/maker-deb",
       config: {},
@@ -38,7 +38,7 @@ module.exports = {
       config: {
         repository: {
           owner: "ulkuehn",
-          name: "DIM",
+          name: "FORGE",
         },
         authToken:"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",
         prerelease: true,
