@@ -1,0 +1,57 @@
+-------
+Windows
+-------
+
+make/squirrel erzeugt Dateien in ...\out\make\squirrelWindows\x64
+  - [A]-[B]-full.nupkg
+  - [C]-[B] Setup.exe
+  - RELEASES
+
+
+Ausführung der "[C]-[B] Setup.exe" öffnet App mit Standardicon und erzeugt
+  - in <user>\AppData\Local\[A] die Dateien
+    - app.ico (Standardicon)
+    - [C].exe (200kB) mit Standardicon
+    - Squirrel-shortcut.log
+    - Update.exe
+    - Verzeichnis "packages" mit
+      - [A]-[B]-full.nupkg
+      - RELEASES
+      - Verzeichnis "SquirrelTemp"
+    - Verzeichnis "app-[B]"
+      - locales, ffmpeg.dll, squirrel.exe, ...
+      - [C].exe (172MB) mit Standardicon
+      - Verzeichnis "resources" mit Datei app.asar
+  - im Programmverzeichnis [D] eine App mit Namen [C] und Standardicon
+  - in Einstellungen/Apps einen Eintrag [C] mit Versionsangabe [B] (Größe "108 MB")
+  - in <user>\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\[D] eine Verknüpfung mit Namen [C] auf <user>\AppData\Local\[A]\[C].exe
+
+Logging des Install ist:
+    starting... [
+      '<user>\\AppData\\Local\\[A]\\app-[B]\\[C].exe',
+      '--squirrel-firstrun'
+    ]
+    creating main window
+    loading index.html
+    window-all-closed event
+
+Logging der Ausführung ist:
+    starting... [
+      '<user>\\AppData\\Local\\[A]\\app-[B]\\[C].exe',
+    ]
+    creating main window
+    loading index.html
+    window-all-closed event
+    quitting
+
+
+wobei
+  [A] = package.json "name"
+  [B] = package.json "version"
+  [C] = package.json "productName" -- wird übersteuert durch forge.config.js "packagerConfig{name}"
+  [D] = package.json "author{name}"
+
+
+-----
+Linux
+-----
